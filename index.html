@@ -72,7 +72,7 @@ td.now{background:var(--ts)!important;color:#fff!important;font-weight:800}
     <button class="clear" id="clr" aria-label="清除">×</button>
   </div>
   <div class="clock"><span id="ctext"></span><input type="time" id="tm" aria-label="模擬時間"><button id="tnow">用現在時間</button></div>
-  <div class="hint"><span class="dot"></span> = 07:20 仍派送 · 灰色 = 沿用前一格號碼 · 紅色 = 不派 · CD = CD 編號<br>每格號碼 = 喺該時間之前用；藍框 = 而家適用時段</div>
+  <div class="hint"><span class="dot"></span> = 07:20 仍派送 · 灰色 = 沿用前一格號碼 · 紅色 = 不派 · CD = CD 編號<br>每格號碼 = 喺該時間之前用；藍底 = 而家適用時段（過咗最後時間 = 下一輪，用第一格）</div>
 </div>
 <div id="results"></div>
 <div id="tables"></div>
@@ -131,7 +131,7 @@ function matches(row,q){
 let manual=null;
 function londonMins(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const h=+p.find(x=>x.type==='hour').value%24,m=+p.find(x=>x.type==='minute').value;return h*60+m}
 const fmt=m=>String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
-function activeIdx(s,now){for(let i=0;i<s.t.length;i++) if(now<s.t[i]) return i;return -1}
+function activeIdx(s,now){for(let i=0;i<s.t.length;i++) if(now<s.t[i]) return i;return 0}
 function curText(v){return (v===G||v===R)?'不派':v}
 function render(){
   const now=manual!==null?manual:londonMins();
