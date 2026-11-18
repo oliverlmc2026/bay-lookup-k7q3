@@ -53,10 +53,15 @@ tr.hit td.g{background:var(--gray)}tr.hit td.r{background:var(--red)}
 .clock button{font-size:13px;padding:5px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);cursor:pointer}
 .cur{margin-left:auto;font-size:14px;color:var(--mut)}
 .cur b{font-size:26px;color:var(--fg);margin-left:4px}
-.slot.now{outline:3px solid var(--ts);outline-offset:1px}
+.slot.now,.slot.now.g,.slot.now.r{background:var(--ts);border-color:var(--ts);color:#fff;box-shadow:0 0 0 3px rgba(31,78,156,.35);transform:scale(1.04)}
+.slot.now::before{content:"▶ 用緊";display:block;font-size:12px;font-weight:800;color:#ffe27a;letter-spacing:.5px}
+.slot.now .t{color:#dbe6ff}
+.slot.now .v,.slot.now.g.car .v,.slot.now.r .v{color:#fff}
+.slot.now .q{color:#dbe6ff}
+.cur.over{color:var(--red);font-weight:700}
 .slot.dim{opacity:.55}
-th.now{color:var(--fg);box-shadow:inset 0 -3px 0 var(--ts)}
-td.now{box-shadow:inset 0 0 0 2px var(--ts)}
+th.now{background:var(--ts);color:#fff}
+td.now{background:var(--ts)!important;color:#fff!important;font-weight:800}
 </style>
 </head>
 <body>
@@ -153,7 +158,7 @@ function render(){
   if(!q){res.innerHTML='';return}
   if(!hits.length){res.innerHTML='<div class="none">搵唔到，試吓打少啲字（例如 only「gates」）。</div>';return}
   res.innerHTML=hits.slice(0,8).map(({s,r})=>{const act=activeIdx(s,now);
-    const cur=act<0?'<span class="cur">已過最後時段</span>':`<span class="cur">而家<b>${curText(eff(r[2],act))}</b></span>`;
+    const cur=act<0?'<span class="cur over">已過最後時段</span>':`<span class="cur">而家<b>${curText(eff(r[2],act))}</b></span>`;
     return `<div class="res"><div class="top"><span class="nm">${r[0]}</span><span class="chip ${s.id}">${s.id.toUpperCase()}</span>${r[1]?'<span class="dot" title="07:20 仍派送"></span>':''}${cur}</div>
     <div class="slots">${r[2].map((v,i)=>slotHTML(s.cols[i],v,i===act,act>=0,eff(r[2],i))).join('')}</div></div>`}).join('');
 }
