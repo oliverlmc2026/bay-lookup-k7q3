@@ -72,7 +72,7 @@ td.now{background:var(--ts)!important;color:#fff!important;font-weight:800}
     <button class="clear" id="clr" aria-label="清除">×</button>
   </div>
   <div class="clock"><span id="ctext"></span><input type="time" id="tm" aria-label="模擬時間"><button id="tnow">用現在時間</button></div>
-  <div class="hint"><span class="dot"></span> = 07:20 仍派送 · 灰色 = 沿用前一格號碼 · 紅色 = 不派 · CD = CD 編號<br>每格號碼 = 喺該時間之前用；藍底 = 而家適用時段（過咗最後時間 = 下一輪，用第一格）</div>
+  <div class="hint">灰色 = 沿用前一格號碼 · 紅色 = 不派 · CD = CD 編號<br>每格號碼 = 喺該時間之前用；藍底 = 而家適用時段（過咗最後時間 = 下一輪，用第一格）</div>
 </div>
 <div id="results"></div>
 <div id="tables"></div>
@@ -148,7 +148,7 @@ function render(){
       const m=matches(r,q);
       if(m) hits.push({s,r});
       if(q&&!m) continue;
-      body+=`<tr class="${m?'hit':''}"><td>${r[1]?'<span class="dot"></span> ':''}${r[0]}</td>${r[2].map((v,i)=>cellHTML(v,i===act,eff(r[2],i))).join('')}</tr>`;
+      body+=`<tr class="${m?'hit':''}"><td>${r[0]}</td>${r[2].map((v,i)=>cellHTML(v,i===act,eff(r[2],i))).join('')}</tr>`;
     }
     if(!body) continue;
     tables+=`<section><div class="sh ${s.id}">${s.title}</div><table><thead><tr><th>Delivery Office</th>${s.cols.map((c,i)=>`<th class="${i===act?'now':''}">${c}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></section>`;
@@ -159,7 +159,7 @@ function render(){
   if(!hits.length){res.innerHTML='<div class="none">搵唔到，試吓打少啲字（例如 only「gates」）。</div>';return}
   res.innerHTML=hits.slice(0,8).map(({s,r})=>{const act=activeIdx(s,now);
     const cur=act<0?'<span class="cur over">已過最後時段</span>':`<span class="cur">而家<b>${curText(eff(r[2],act))}</b></span>`;
-    return `<div class="res"><div class="top"><span class="nm">${r[0]}</span><span class="chip ${s.id}">${s.id.toUpperCase()}</span>${r[1]?'<span class="dot" title="07:20 仍派送"></span>':''}${cur}</div>
+    return `<div class="res"><div class="top"><span class="nm">${r[0]}</span><span class="chip ${s.id}">${s.id.toUpperCase()}</span>${cur}</div>
     <div class="slots">${r[2].map((v,i)=>slotHTML(s.cols[i],v,i===act,act>=0,eff(r[2],i))).join('')}</div></div>`}).join('');
 }
 $('#q').addEventListener('input',render);
